@@ -1,5 +1,8 @@
+'use client';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useStore } from './_utils/store';
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
   {
@@ -21,16 +24,20 @@ export default function Home() {
   Functionality:
   - Create a button that allows users to clear the expenses
   - Create a button that allows users to download the expenses
+
   */
   }
 
-  const [expense, setExpense] = useState<{
-    category: string;
-    title: string;
-    price: string;
-  }>({ category: '', title: '', price: '' });
+  const { expenses, addExpense } = useStore();
 
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24'></main>
+    <main className='flex min-h-screen flex-col items-center justify-between p-24'>
+      <Button onClick={() => addExpense('test', 100)}>Add Expense</Button>
+      <ul>
+        {expenses.map((expense, index) => (
+          <li key={index}>{expense.title + ' ' + expense.amount}</li>
+        ))}
+      </ul>
+    </main>
   );
 }
