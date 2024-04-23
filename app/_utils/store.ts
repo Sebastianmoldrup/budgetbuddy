@@ -22,6 +22,10 @@ export type ActionsType = {
   clearExpenses: () => void;
 };
 
+function getCookies() {
+  // get expense cookies values, parse them to objects and add to expenses array
+}
+
 export const useStore = create<StateType & ActionsType>()((set) => ({
   expenses: [],
   addExpense: (id: number, title: string, amount: number, category?: string) =>

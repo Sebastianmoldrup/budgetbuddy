@@ -13,10 +13,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { get } from 'http';
 
 export default function AddExpenseForm() {
   const { expenses, addExpense } = useStore();
-  console.log(expenses);
+  // console.log(expenses);
 
   const formSchema = z.object({
     title: z.string().min(2, {
@@ -42,10 +43,18 @@ export default function AddExpenseForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // If there are no expenses, set the id to 0, otherwise set it to the length of the expenses array
     const newId = expenses.length === 0 ? 0 : expenses.length;
+    console.log(newId);
     // Add the new expense to the store
     addExpense(newId, values.title, parseInt(values.amount), values.category);
+    // console.log(JSON.stringify(values));
+    setCookie(`expense_${newId}`, values);
     // Reset the form
     form.reset();
+  }
+
+  function setCookie(name: string, value: object): void {
+    // Make a cookie that gets updated with more expenses, so cookie.value = {} + new expense {}
+    document.cookie = `${name}=${JSON.stringify(value)}`;
   }
 
   return (
